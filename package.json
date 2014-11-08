@@ -1,0 +1,43 @@
+{
+  "name": "gulp-jade-i18n",
+  "version": "0.0.1",
+  "description": "Gulp plugin to compile Jade templates with internationalization support based on JS/JSON/YAML files",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felixzapata/gulp-jade-i18n"
+  },
+  "keywords": [
+    "gulpplugin",
+    "jade",
+    "translation",
+    "i18n",
+    "internationalization"
+  ],
+  "author": {
+    "name": "Félix Zapata",
+    "url": "http://www.linkedin.com/in/felixzapata"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/felixzapata/gulp-jade-i18n/issues"
+  },
+  "homepage": "https://github.com/felixzapata/gulp-jade-i18n",
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^1.9.0",
+    "gulp-nodeunit": "0.0.5",
+    "gulp-util": "^3.0.1",
+    "supertest": "~0.7.1"
+  },
+  "dependencies": {
+    "jade": "1.1 - 1.7",
+    "lodash": "^2.4.1",
+    "event-stream": "^3.1.7",
+    "vinyl-fs": "^0.3.6",
+    "js-yaml": "~3.2.2"
+  }
+}
