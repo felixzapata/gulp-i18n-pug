@@ -27,7 +27,9 @@
   },
   "homepage": "https://github.com/felixzapata/gulp-jade-i18n",
   "devDependencies": {
+    "glob": "^4.0.6",
     "gulp": "^3.8.10",
+    "gulp-clean": "^0.3.1",
     "gulp-jshint": "^1.9.0",
     "gulp-nodeunit": "0.0.5",
     "gulp-util": "^3.0.1",
