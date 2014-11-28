@@ -81,9 +81,9 @@ function addLocaleExtensionDest(file, locale, outputExt) {
     }
 
     if (ext) {
-        dest = path.join(path.dirname(file.dest), path.basename(file.dest, ext) + '.#{locale}');
+        dest = path.join(path.dirname(file), path.basename(file, ext) + '.#{locale}');
     } else {
-        dest = path.join(file.dest, getBaseName() + '.#{locale}');
+        dest = path.join(file, getBaseName() + '.#{locale}');
     }
     if (file.orig.ext) {
         dest += setExtension(file.orig.ext);
@@ -94,15 +94,15 @@ function addLocaleExtensionDest(file, locale, outputExt) {
 }
 
 function addLocaleDirnameDest(file, locale, outputExt) {
-    var base, dest, ext = getExtension(file.dest);
+    var base, dest, ext = getExtension(file);
     if (ext) {
-        dest = path.join(path.dirname(file.dest), locale, path.basename(file.dest, ext) + setExtension(ext));
+        dest = path.join(path.dirname(file), locale, path.basename(file, ext) + setExtension(ext));
     } else {
-        if (/(\/|\*+)$/i.test(file.dest)) {
-            base = file.dest.split('/');
+        if (/(\/|\*+)$/i.test(file)) {
+            base = file.split('/');
             dest = path.join(path.join.apply(null, base.slice(0, -1)), locale, base.slice(-1)[0]);
         } else {
-            dest = path.join(file.dest, locale);
+            dest = path.join(file, locale);
         }
     }
     dest = dest.replace(/\.jade$/i, setExtension(outputExt));
