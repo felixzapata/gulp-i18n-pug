@@ -36,7 +36,7 @@ gulp.task('jadeI18n', function() {
         translateFile = {
 
             i18n: {
-                locales: ['test/locales/*'],
+                locales: 'test/locales/*',
                 namespace: '$t',
                 localeExtension: true
             },
@@ -58,13 +58,15 @@ gulp.task('jadeI18n', function() {
 
         };
 
-    gulp.src('test/fixtures/directory/*.jade')
-        .pipe(jadeI18n(translateDir))
-        .pipe(gulp.dest('.tmp/sample.jade'));
+    // gulp.src('test/fixtures/directory/*.jade')
+    //     .pipe(jadeI18n(translateDir))
+    //     //.pipe(jade())
+    //     .pipe(gulp.dest(function(path) { return path;  } ));
+    //     //.pipe(gulp.dest('.tmp/sample.jade'));
 
-    // gulp.src('*.jade')
-    //     .pipe(jadeI18n(translateFile))
-    //     .pipe(gulp.dest('./dist/'));
+    gulp.src('test/fixtures/file/*.jade')
+        .pipe(jadeI18n(translateFile))
+        .pipe(gulp.dest('./dist/'));
 
     // gulp.src('test/fixtures/directory/*.jade')
     //     .pipe(jadeI18n(noI18n))
