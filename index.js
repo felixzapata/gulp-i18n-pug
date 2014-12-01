@@ -11,6 +11,7 @@
 
 var _ = require('lodash'),
     glob = require('glob'),
+    globule = require('globule'),
     fs = require('fs'),
     es = require('event-stream'),
     gutil = require('gulp-util'),
@@ -71,26 +72,32 @@ function readJSON(filepath, options) {
     }
 }
 
-function addLocaleExtensionDest(file, locale, outputExt) {
-    var dest, ext;
-    locale = locale.toLowerCase();
-    ext = getExtension(file.dest);
+function addLocaleExtensionDest(obj, locale, outputExt) {
+    
+    glob(path.join(obj.cwd, obj.src), function(err, file) {
 
-    function getBaseName() {
-        return path.basename(file.src[0]).split('.')[0];
-    }
+        var dest, ext;
+        
+        locale = locale.toLowerCase();
+        ext = getExtension(file);
 
-    if (ext) {
-        dest = path.join(path.dirname(file), path.basename(file, ext) + '.#{locale}');
-    } else {
-        dest = path.join(file, getBaseName() + '.#{locale}');
-    }
-    if (file.orig.ext) {
-        dest += setExtension(file.orig.ext);
-    } else {
-        dest += setExtension(outputExt);
-    }
-    return dest;
+        function getBaseName() {
+            return path.basename(file).split('.')[0];
+        }
+
+        if (ext) {
+            dest = path.join(path.dirname(file), path.basename(file, ext) + '.#{locale}');
+        } else {
+            dest = path.join(file, getBaseName() + '.#{locale}');
+        }
+        if (obj.ext) {
+            dest += setExtension(obj.ext);
+        } else {
+            dest += setExtension(outputExt);
+        }
+
+        return dest;
+    });
 }
 
 function addLocaleDirnameDest(file, locale, outputExt) {
@@ -154,32 +161,39 @@ function processJadeFiles(options) {
 
 
     if (locales && locales.length) {
-        glob(locales, function(err, files) {
-            files.forEach(function(filepath) {
-                var config = {}, currentLanguage, fileExt, locale, opts, pathToStoredLanguage, storedLanguage;
-                fileExt = filepath.split('.').slice(-1)[0];
-                locale = path.basename(filepath, '.' + fileExt);
-                gutil.log("Loading locale '" + locale + "'");
-                gutil.log('Reading translation data: ' + filepath);
-                if (typeof options.data === 'function') {
-                    options.data = options.data() || {};
-                }
-                if (!_.isPlainObject(options.data)) {
-                    options.data = {};
-                }
-                options.data = _.extend(options.data, readFile(filepath));
-                options.data[namespace] = readFile(filepath);
-                options.data.$localeName = locale;
-                config.files = _.cloneDeep(options.files).map(function(file) {
-                    if (localeExtension) {
-                        addLocaleExtensionDest(file, locale, defaultExt);
-                    } else {
-                        addLocaleDirnameDest(file, locale, defaultExt);
-                    }
-                    return file;
-                });
-            });
+        //glob(locales, function(err, files) {
+        locales.forEach(function(filepath) {
+            var config = {},
+                currentLanguage, fileExt, locale, opts, pathToStoredLanguage, storedLanguage;
+            fileExt = filepath.split('.').slice(-1)[0];
+            locale = path.basename(filepath, '.' + fileExt);
+            gutil.log("Loading locale '" + locale + "'");
+            gutil.log('Reading translation data: ' + filepath);
+            if (typeof options.data === 'function') {
+                options.data = options.data() || {};
+            }
+            if (!_.isPlainObject(options.data)) {
+                options.data = {};
+            }
+            options.data = _.extend(options.data, readFile(filepath));
+            options.data[namespace] = readFile(filepath);
+            options.data.$localeName = locale;
+            if (localeExtension) {
+                addLocaleExtensionDest(options.files, locale, defaultExt);
+            } else {
+                addLocaleDirnameDest(options.files, locale, defaultExt);
+            }
+            //config.files = _.cloneDeep(options.files);
+            // config.files = _.map(options.files, function(file) {
+            //     if (localeExtension) {
+            //         addLocaleExtensionDest(file, locale, defaultExt);
+            //     } else {
+            //         addLocaleDirnameDest(file, locale, defaultExt);
+            //     }
+            //     return file;
+            // });
         });
+        //});
 
     } else {
         gutil.log('Locales files not found. Nothing to translate');
@@ -241,7 +255,7 @@ function jadeI18nPlugin(customOptions) {
     function endStream() {
 
         if (files.length) {
-            options.files = files;
+            options.i18n.locales = files;
         }
 
         processJadeFiles(options);

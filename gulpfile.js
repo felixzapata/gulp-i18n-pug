@@ -41,7 +41,14 @@ gulp.task('jadeI18n', function() {
                 localeExtension: true
             },
             client: false,
-            pretty: true
+            pretty: true,
+            files: {
+                expand: true,
+                ext: '.html',
+                cwd: 'test/fixtures/file',
+                src: '*.jade',
+                dest: '.tmp/'
+            }
         },
 
         noI18n = {
@@ -64,7 +71,9 @@ gulp.task('jadeI18n', function() {
     //     .pipe(gulp.dest(function(path) { return path;  } ));
     //     //.pipe(gulp.dest('.tmp/sample.jade'));
 
-    gulp.src('test/fixtures/file/*.jade')
+    //gulp.src('test/fixtures/file/*.jade')
+    //gulp.src(translateFile.files.src, {cwd: translateFile.files.cwd})
+    gulp.src(translateFile.i18n.locales)
         .pipe(jadeI18n(translateFile))
         .pipe(gulp.dest('./dist/'));
 
