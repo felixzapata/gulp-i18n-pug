@@ -11,7 +11,6 @@
 
 var _ = require('lodash'),
     glob = require('glob'),
-    globule = require('globule'),
     fs = require('fs'),
     es = require('event-stream'),
     gutil = require('gulp-util'),
@@ -77,7 +76,7 @@ function addLocaleExtensionDest(obj, locale, outputExt) {
     glob(path.join(obj.cwd, obj.src), function(err, file) {
 
         var dest, ext;
-        
+
         locale = locale.toLowerCase();
         ext = getExtension(file);
 
@@ -183,6 +182,7 @@ function processJadeFiles(options) {
             } else {
                 addLocaleDirnameDest(options.files, locale, defaultExt);
             }
+
             //config.files = _.cloneDeep(options.files);
             // config.files = _.map(options.files, function(file) {
             //     if (localeExtension) {
