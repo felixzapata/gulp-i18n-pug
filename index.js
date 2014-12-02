@@ -73,7 +73,8 @@ function readJSON(filepath, options) {
 
 function addLocaleExtensionDest(obj, locale, outputExt) {
     
-    glob(path.join(obj.cwd, obj.src), function(err, file) {
+    var files = glob.sync(path.join(obj.cwd, obj.src));
+    return _.map(files, function(file) {
 
         var dest, ext;
 
@@ -94,7 +95,6 @@ function addLocaleExtensionDest(obj, locale, outputExt) {
         } else {
             dest += setExtension(outputExt);
         }
-
         return dest;
     });
 }
@@ -177,13 +177,17 @@ function processJadeFiles(options) {
             options.data = _.extend(options.data, readFile(filepath));
             options.data[namespace] = readFile(filepath);
             options.data.$localeName = locale;
+            config.files = _.cloneDeep(options.files);
+
             if (localeExtension) {
                 addLocaleExtensionDest(options.files, locale, defaultExt);
             } else {
                 addLocaleDirnameDest(options.files, locale, defaultExt);
             }
 
-            //config.files = _.cloneDeep(options.files);
+            console.log(config.files);
+            
+            // console.log(config.files);
             // config.files = _.map(options.files, function(file) {
             //     if (localeExtension) {
             //         addLocaleExtensionDest(file, locale, defaultExt);
