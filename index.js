@@ -81,20 +81,23 @@ function addLocaleExtensionDest(obj, locale, outputExt) {
         locale = locale.toLowerCase();
         ext = getExtension(file);
 
+
         function getBaseName() {
             return path.basename(file).split('.')[0];
         }
 
         if (ext) {
-            dest = path.join(path.dirname(file), path.basename(file, ext) + '.#{locale}');
+            dest = path.join(obj.dest, path.basename(file, ext) + '.' + locale);
         } else {
-            dest = path.join(file, getBaseName() + '.#{locale}');
+            dest = path.join(obj.dest, getBaseName() + '.' + locale);
         }
+
         if (obj.ext) {
             dest += setExtension(obj.ext);
         } else {
             dest += setExtension(outputExt);
         }
+
         return dest;
     });
 }
