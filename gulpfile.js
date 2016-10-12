@@ -28,7 +28,7 @@ gulp.task('pugI18n', function() {
 
     var translateDir = {
             i18n: {
-                locales: 'test/locales/*'
+                locales: 'test/locales/*.json'
             },
             pretty: true
         },
