@@ -118,11 +118,37 @@ function readFile(filepath) {
     return data;
 }
 
-function plugI18nPlugin(customOptions) {
+function plugI18nPlugin(options) {
 
-    var defaultOptions = {};
-    var options = customOptions ? Object.assign(defaultOptions, customOptions) : defaultOptions;
-    var locales = options.i18n.locales;
+    var defaultExt;
+    var localeExtension; 
+    var namespace;
+    var filePath;
+    var fileExt;
+    var locale;
+
+    if (!options.i18n) {
+        options.i18n = {};
+    } else {
+        locales = options.i18n.locales;
+        namespace = options.i18n.namespace;
+        localeExtension = options.i18n.localeExtension;
+        defaultExt = options.i18n.defaultExt;
+    }
+
+    if (!namespace) {
+        namespace = '$i18n';
+    }
+
+    if (!localeExtension) {
+        localeExtension = false;
+    }
+
+    if (!defaultExt) {
+        defaultExt = '.html';
+    }
+
+    var locales = glob.sync(options.i18n.locales);
 
 
     var bufferContents = function (file, enc, cb) {
@@ -140,7 +166,19 @@ function plugI18nPlugin(customOptions) {
 
         if (locales && locales.length) {
 
-            pug.compileFile(file.path)(locales);
+            for(var i = 0, len = locales.length; i < len; i++) {
+                filePath = locales[i];
+                fileExt = filePath.split('.').slice(-1)[0];
+                locale = path.basename(filePath, '.' + fileExt);
+                gutil.log('Loading locale ' + locale);
+                gutil.log('Reading translation data: ' + filePath);
+                if (!options.data) {
+                    options.data = {};
+                }
+                options.data[namespace] = readFile(filePath);
+                //options.data.$localeName = locale;
+                //fs.writeFileSync(dest, pug.compileFile(file.path, options)(options.data));
+            }
 
         } else {
             gutil.log('Locales files not found. Nothing to translate');
