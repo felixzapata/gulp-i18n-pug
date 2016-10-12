@@ -1,41 +1,25 @@
 /*
  * gult-stubby
- * https://github.com/felixzapata/gulp-jade-i18n
+ * https://github.com/felixzapata/gulp-pug-i18n
  *
- * Copyright (c) 2014 Félix Zapata
+ * Copyright (c) 2016 Félix Zapata
  * Licensed under the MIT license.
  */
 
 
 'use strict';
 
-var _ = require('lodash'),
-    glob = require('glob'),
-    fs = require('fs'),
-    es = require('event-stream'),
-    gutil = require('gulp-util'),
-    compile = require('jade').compile,
-    compileClient = require('jade').compileClient,
-    ext = require('gulp-util').replaceExtension,
-    PluginError = require('gulp-util').PluginError,
-    path = require('path'),
-    YAML = require('js-yaml'),
-    PLUGIN_NAME = 'gulp-jade-i18n';
-
-
-function handleCompile(contents, opts) {
-    if (opts.client) {
-        return compileClient(contents, opts);
-    }
-    return compile(contents, opts)(opts.locals || opts.data);
-}
-
-function handleExtension(filepath, opts) {
-    if (opts.client) {
-        return ext(filepath, '.js');
-    }
-    return ext(filepath, '.html');
-}
+var R = require('ramda');
+var pug = require('pug');
+var glob = require('glob');
+var fs = require('fs');
+var gutil = require('gulp-util');
+var ext = require('gulp-util').replaceExtension;
+var PluginError = require('gulp-util').PluginError;
+var path = require('path');
+var YAML = require('js-yaml');
+var through = require('through2');
+var PLUGIN_NAME = 'gulp-pug-i18n';
 
 
 function getExtension(filepath) {
@@ -72,9 +56,9 @@ function readJSON(filepath, options) {
 }
 
 function addLocaleExtensionDest(obj, locale, outputExt) {
-    
+
     var files = glob.sync(path.join(obj.cwd, obj.src));
-    return _.map(files, function(file) {
+    return _.map(files, function (file) {
 
         var dest, ext;
 
@@ -134,145 +118,35 @@ function readFile(filepath) {
     return data;
 }
 
-function processJadeFiles(options) {
+function plugI18nPlugin(customOptions) {
 
-    var anotherTargetsForTask, defaultExt, gruntTaskName, jadeConfig, jadeOrigConfig, languageHasChanged, localeExtension, locales, namespace;
-    jadeConfig = null;
-
-    if (!options.i18n) {
-        options.i18n = {};
-    } else {
-        locales = options.i18n.locales;
-        namespace = options.i18n.namespace;
-        localeExtension = options.i18n.localeExtension;
-        defaultExt = options.i18n.defaultExt;
-    }
-
-    if (!namespace) {
-        namespace = '$i18n';
-    }
-
-    if (!localeExtension) {
-        localeExtension = false;
-    }
-
-    if (!defaultExt) {
-        defaultExt = '.html';
-    }
+    var defaultOptions = {};
+    var options = customOptions ? Object.assign(defaultOptions, customOptions) : defaultOptions;
+    var locales = options.i18n.locales;
 
 
+    var bufferContents = function (file, enc, cb) {
 
-    if (locales && locales.length) {
-        //glob(locales, function(err, files) {
-        locales.forEach(function(filepath) {
-            var config = {},
-                currentLanguage, fileExt, locale, opts, pathToStoredLanguage, storedLanguage;
-            fileExt = filepath.split('.').slice(-1)[0];
-            locale = path.basename(filepath, '.' + fileExt);
-            gutil.log("Loading locale '" + locale + "'");
-            gutil.log('Reading translation data: ' + filepath);
-            if (typeof options.data === 'function') {
-                options.data = options.data() || {};
-            }
-            if (!_.isPlainObject(options.data)) {
-                options.data = {};
-            }
-            options.data = _.extend(options.data, readFile(filepath));
-            options.data[namespace] = readFile(filepath);
-            options.data.$localeName = locale;
-            config.files = _.cloneDeep(options.files);
-
-            if (localeExtension) {
-                addLocaleExtensionDest(options.files, locale, defaultExt);
-            } else {
-                addLocaleDirnameDest(options.files, locale, defaultExt);
-            }
-
-            console.log(config.files);
-            
-            // console.log(config.files);
-            // config.files = _.map(options.files, function(file) {
-            //     if (localeExtension) {
-            //         addLocaleExtensionDest(file, locale, defaultExt);
-            //     } else {
-            //         addLocaleDirnameDest(file, locale, defaultExt);
-            //     }
-            //     return file;
-            // });
-        });
-        //});
-
-    } else {
-        gutil.log('Locales files not found. Nothing to translate');
-    }
-}
-
-function jadeI18nPlugin(customOptions) {
-
-
-    var options = customOptions ||  {},
-        child,
-        stream,
-        files = [];
-
-
-    function CompileJade(file, enc, cb) {
-        options.filename = file.path;
-        if (file.data) {
-            options.data = file.data;
+        if (file.isNull()) {
+            cb(null, file);
+            return;
         }
-        file.path = handleExtension(file.path, options);
+
         if (file.isStream()) {
-            return cb(new PluginError(PLUGIN_NAME, 'Streaming not supported'));
+            driver.quit();
+            cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
+            return;
         }
-        if (file.isBuffer()) {
-            try {
-                file.contents = new Buffer(handleCompile(String(file.contents), options));
-            } catch (e) {
-                return cb(new PluginError(PLUGIN_NAME, e));
-            }
-        }
-        cb(null, file);
-    }
 
-    function done(code) {
-        // Stop the server if it's running
-        if (child) {
-            child.kill();
-        }
-        // End the stream if it exists
-        if (stream) {
-            if (code) {
-                stream.emit('error', new gutil.PluginError(PLUGIN_NAME, ' exited with code ' + code));
-            } else {
-                stream.emit('end');
-            }
-        }
-    }
+        if (locales && locales.length) {
 
+            pug.compileFile(file.path)(locales);
 
-    function queueFile(file) {
-        if (file) {
-            files.push(file.path);
         } else {
-            stream.emit('error', new Error('Got undefined file'));
+            gutil.log('Locales files not found. Nothing to translate');
         }
     }
-
-    function endStream() {
-
-        if (files.length) {
-            options.i18n.locales = files;
-        }
-
-        processJadeFiles(options);
-
-
-    }
-
-    stream = es.through(queueFile, endStream);
-    return stream;
+    return through.obj(bufferContents);
 }
 
-
-module.exports = jadeI18nPlugin;
+module.exports = plugI18nPlugin;
