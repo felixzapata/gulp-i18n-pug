@@ -1,17 +1,16 @@
 /*
  * gulp-stubby
- * https://github.com/felixzapata/gulp-jade-i18n
+ * https://github.com/felixzapata/gulp-pug-i18n
  *
- * Copyright (c) 2014 Felix Zapata
+ * Copyright (c) 2016 Felix Zapata
  * Licensed under the MIT license.
  */
 
 'use strict';
 
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint'),
-    jadeI18n = require('./index.js'),
-    clean = require('gulp-clean'),
+    pugI18n = require('./index.js'),
+    clean = require('del'),
     nodeunit = require('gulp-nodeunit');
 
 
@@ -25,7 +24,7 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter());
 });
 
-gulp.task('jadeI18n', function() {
+gulp.task('pugI18n', function() {
 
     var translateDir = {
             i18n: {
@@ -41,14 +40,7 @@ gulp.task('jadeI18n', function() {
                 localeExtension: true
             },
             client: false,
-            pretty: true,
-            files: {
-                expand: true,
-                ext: '.html',
-                cwd: 'test/fixtures/file',
-                src: '*.jade',
-                dest: '.tmp/'
-            }
+            pretty: true
         },
 
         noI18n = {
@@ -64,22 +56,9 @@ gulp.task('jadeI18n', function() {
             pretty: true
 
         };
-
-    // gulp.src('test/fixtures/directory/*.jade')
-    //     .pipe(jadeI18n(translateDir))
-    //     //.pipe(jade())
-    //     .pipe(gulp.dest(function(path) { return path;  } ));
-    //     //.pipe(gulp.dest('.tmp/sample.jade'));
-
-    //gulp.src('test/fixtures/file/*.jade')
-    //gulp.src(translateFile.files.src, {cwd: translateFile.files.cwd})
-    gulp.src(translateFile.i18n.locales)
-        .pipe(jadeI18n(translateFile))
+    return gulp.src('test/fixtures/directory/*.pug')
+        .pipe(pugI18n(translateDir))
         .pipe(gulp.dest('./dist/'));
-
-    // gulp.src('test/fixtures/directory/*.jade')
-    //     .pipe(jadeI18n(noI18n))
-    //     .pipe(gulp.dest('.tmp/no-i18n.html'));
 
 });
 
@@ -95,6 +74,6 @@ gulp.task('nodeunit', function() {
 });
 
 
-gulp.task('test', ['default', 'jadeI18n', 'nodeunit']);
+gulp.task('test', ['default', 'pugI18n', 'nodeunit']);
 
-gulp.task('default', ['clean', 'jshint', 'test']);
+gulp.task('default', ['clean', 'test']);
