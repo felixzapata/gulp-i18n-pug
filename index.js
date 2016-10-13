@@ -98,7 +98,7 @@ function addLocaleDirnameDest(file, locale, outputExt) {
             dest = path.join(file, locale);
         }
     }
-    dest = dest.replace(/\.jade$/i, setExtension(outputExt));
+    dest = dest.replace(/\.pug$/i, setExtension(outputExt));
     return dest;
 }
 
