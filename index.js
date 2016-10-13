@@ -183,8 +183,16 @@ function plugI18nPlugin(options) {
         } else {
             gutil.log('Locales files not found. Nothing to translate');
         }
+
+        cb();
     }
-    return through.obj(bufferContents);
+
+    var endStream = function (cb) {
+        // this.push(joinedFile);
+        cb();
+    }
+
+    return through.obj(bufferContents, endStream);
 }
 
 module.exports = plugI18nPlugin;
