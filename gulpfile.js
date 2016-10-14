@@ -28,12 +28,12 @@ gulp.task('pugI18n', function() {
 
     var translateDir = {
             i18n: {
-                locales: 'test/locales/*.json'
+                dest: 'dist',
+                locales: 'test/locales/*.*'
             },
             pretty: true
         },
         translateFile = {
-
             i18n: {
                 locales: 'test/locales/*',
                 namespace: '$t',
@@ -58,7 +58,7 @@ gulp.task('pugI18n', function() {
         };
     return gulp.src('test/fixtures/directory/*.pug')
         .pipe(pugI18n(translateDir))
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest(translateDir.i18n.dest));
 
 });
 

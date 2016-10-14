@@ -120,10 +120,13 @@ function readFile(filepath) {
 
 function plugI18nPlugin(options) {
 
+    var baseName;
+    var compiledFile;
     var defaultExt;
-    var localeExtension; 
+    var dest;
+    var localeExtension;
+    var localePath; 
     var namespace;
-    var filePath;
     var fileExt;
     var locale;
 
@@ -167,17 +170,30 @@ function plugI18nPlugin(options) {
         if (locales && locales.length) {
 
             for(var i = 0, len = locales.length; i < len; i++) {
-                filePath = locales[i];
-                fileExt = filePath.split('.').slice(-1)[0];
-                locale = path.basename(filePath, '.' + fileExt);
+                localePath = locales[i];
+                fileExt = localePath.split('.').slice(-1)[0];
+                locale = path.basename(localePath, '.' + fileExt);
+                baseName = path.basename(file.path);
                 gutil.log('Loading locale ' + locale);
-                gutil.log('Reading translation data: ' + filePath);
+                gutil.log('Reading translation data: ' + localePath);
                 if (!options.data) {
                     options.data = {};
                 }
-                options.data[namespace] = readFile(filePath);
-                //options.data.$localeName = locale;
-                //fs.writeFileSync(dest, pug.compileFile(file.path, options)(options.data));
+                options.data[namespace] = readFile(localePath);
+
+                if (localeExtension) {
+                    dest = addLocaleExtensionDest(baseName, locale, defaultExt);
+                } else {
+                    dest = addLocaleDirnameDest(baseName, locale, defaultExt);
+                }
+
+                compiledFile = new gutil.File({
+                    base: path.join(__dirname, locale),
+                    cwd: __dirname,
+                    contents: new Buffer(pug.compileFile(file.path, options)(options.data)),
+                    path: path.join(options.i18n.dest, dest)
+                });
+                
             }
 
         } else {
@@ -188,7 +204,11 @@ function plugI18nPlugin(options) {
     }
 
     var endStream = function (cb) {
-        // this.push(joinedFile);
+        if (!compiledFile) {
+            cb();
+            return;
+        }
+        this.push(compiledFile);
         cb();
     }
 
