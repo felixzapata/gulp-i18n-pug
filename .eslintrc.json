@@ -1,0 +1,24 @@
+{
+  "extends": "eslint:recommended",
+  "rules": {
+    "no-console": "off"
+  },
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "html"
+  ],
+  "globals": {
+    "require" : false,
+    "__dirname" : false,
+    "describe" : false,
+    "process" : false,
+    "beforeEach" : false,
+    "afterEach" : false,
+    "module" : false,
+    "it" : false,
+    "xit": false,
+    "xdescribe": false
+  }
+}
