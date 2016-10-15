@@ -10,6 +10,7 @@
     "html"
   ],
   "globals": {
+    "Buffer": false,
     "require" : false,
     "__dirname" : false,
     "describe" : false,
