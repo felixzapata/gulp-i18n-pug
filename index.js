@@ -9,13 +9,10 @@
 
 'use strict';
 
-var R = require('ramda');
 var pug = require('pug');
 var glob = require('glob');
 var fs = require('fs');
 var gutil = require('gulp-util');
-var ext = require('gulp-util').replaceExtension;
-var PluginError = require('gulp-util').PluginError;
 var path = require('path');
 var YAML = require('js-yaml');
 var through = require('through2');
@@ -58,7 +55,7 @@ function readJSON(filepath, options) {
 function addLocaleExtensionDest(obj, locale, outputExt) {
 
     var files = glob.sync(path.join(obj.cwd, obj.src));
-    return _.map(files, function (file) {
+    return files.map(function (file) {
 
         var dest, ext;
 
@@ -162,7 +159,6 @@ function plugI18nPlugin(options) {
         }
 
         if (file.isStream()) {
-            driver.quit();
             cb(new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
             return;
         }
