@@ -8,31 +8,31 @@
 
 'use strict';
 
-var gulp = require('gulp'),
-    pugI18n = require('./index.js'),
-    clean = require('del'),
-    nodeunit = require('gulp-nodeunit');
+var gulp = require('gulp');
+var pugI18n = require('./index.js');
+var del = require('del');
+var nodeunit = require('gulp-nodeunit');
 
 
-gulp.task('jshint', function() {
+gulp.task('jshint', function () {
     gulp.src([
-            '!gulpfile.js',
-            '!test/*.js',
-            'index.js'
-        ])
+        '!gulpfile.js',
+        '!test/*.js',
+        'index.js'
+    ])
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter());
 });
 
-gulp.task('pugI18n', function() {
+gulp.task('pugI18n', ['clean'], function () {
 
     var translateDir = {
-            i18n: {
-                dest: 'dist',
-                locales: 'test/locales/*.*'
-            },
-            pretty: true
+        i18n: {
+            dest: 'dist',
+            locales: 'test/locales/*.*'
         },
+        pretty: true
+    },
         translateFile = {
             i18n: {
                 locales: 'test/locales/*',
@@ -62,14 +62,11 @@ gulp.task('pugI18n', function() {
 
 });
 
-gulp.task('clean', function() {
-    gulp.src('.tmp', {
-            read: false
-        })
-        .pipe(clean());
+gulp.task('clean', function () {
+    return del(['./dist/']);
 });
 
-gulp.task('nodeunit', function() {
+gulp.task('nodeunit', function () {
     gulp.src('test/test.js').pipe(nodeunit());
 });
 
