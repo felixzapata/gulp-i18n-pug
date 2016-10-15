@@ -40,7 +40,8 @@
     "gulp-util": "^3.0.7",
     "mocha": "^2.5.3",
     "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.5"
+    "run-sequence": "^1.1.5",
+    "stream-assert": "^2.0.3"
   },
   "dependencies": {
     "js-yaml": "~3.2.2",
