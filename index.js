@@ -121,11 +121,11 @@ function readFile(filepath) {
 function plugI18nPlugin(options) {
 
     var baseName;
-    var compiledFile;
+    var compiledFiles = [];
     var defaultExt;
     var dest;
     var localeExtension;
-    var localePath; 
+    var localePath;
     var namespace;
     var fileExt;
     var locale;
@@ -169,7 +169,7 @@ function plugI18nPlugin(options) {
 
         if (locales && locales.length) {
 
-            for(var i = 0, len = locales.length; i < len; i++) {
+            for (var i = 0, len = locales.length; i < len; i++) {
                 localePath = locales[i];
                 fileExt = localePath.split('.').slice(-1)[0];
                 locale = path.basename(localePath, '.' + fileExt);
@@ -187,28 +187,29 @@ function plugI18nPlugin(options) {
                     dest = addLocaleDirnameDest(baseName, locale, defaultExt);
                 }
 
-                compiledFile = new gutil.File({
+                compiledFiles.push(new gutil.File({
                     base: path.join(__dirname, locale),
                     cwd: __dirname,
                     contents: new Buffer(pug.compileFile(file.path, options)(options.data)),
                     path: path.join(options.i18n.dest, dest)
-                });
-                
+                }));
+
             }
 
         } else {
             gutil.log('Locales files not found. Nothing to translate');
         }
-
         cb();
     }
 
     var endStream = function (cb) {
-        if (!compiledFile) {
+        if (!compiledFiles || compiledFiles.length === 0) {
             cb();
             return;
         }
-        this.push(compiledFile);
+        for (var i = 0, len = compiledFiles.length; i < len; i++) {
+            this.push(compiledFiles[i]);
+        }
         cb();
     }
 
