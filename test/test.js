@@ -3,56 +3,97 @@
 var pugI18n = require('../index');
 var path = require('path');
 var fs = require('fs-extra');
+var sassert = require('stream-assert');
 var assert = require('assert');
+var gulp = require('gulp');
 require('mocha');
 
 var fixtures = function (glob) { return path.join(__dirname, './fixtures', glob); }
 
-function fileExists(filePath) {
-  try {
-    return fs.statSync(filePath).isFile();
-  } catch (err) {
-    return false;
-  }
-}
-
 describe('gulp-pug-i18n', function () {
 
-	beforeEach(function (done) {
-    var folder = path.join(__dirname, 'temp');
-    fs.remove(folder, done);
-	});
+  afterEach(function (done) {
+    fs.remove('./.tmp', done);
+  });
 
-	describe('Translate file', function () {
+  describe('Translate directory', function () {
 
-		it('should translate the template into english', function (done) {
-			var options = {
-				urls: [fixtures('working.html')]
-			};
-			gulp.src(fixtures('working.html'))
-				.pipe(pugI18n(options))
+    it('should translate the template into english', function (done) {
+      var options = {
+        i18n: {
+          dest: '.tmp',
+          locales: 'test/locales/*.*'
+        },
+        pretty: true
+      };
+      gulp.src(fixtures('directory/*.pug'))
+        .pipe(pugI18n(options))
+        .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/en_US/sample.html')).toString();
+          var actual = fs.readFileSync(path.join('./.tmp/en_US/template.html')).toString();
+          assert.equal(actual, expected);
           done();
         }));
 
-		});
-
-    xit('should translate the template into spanish', function (done) {
-		});
-	});
-
-  xdescribe('Translate directory', function () { 
-    it('should translate the template into english', function (done) { 
-
     });
-    it('should translate the template into spanish', function (done) { 
+
+    it('should translate the template into spanish', function (done) {
+
+      var options = {
+        i18n: {
+          dest: '.tmp',
+          locales: 'test/locales/*.*'
+        },
+        pretty: true
+      };
+      gulp.src(fixtures('directory/*.pug'))
+        .pipe(pugI18n(options))
+        .pipe(gulp.dest(options.i18n.dest))
+        .pipe(sassert.end(function () {
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/es_ES/sample.html')).toString();
+          var actual = fs.readFileSync(path.join('./.tmp/es_ES/template.html')).toString();
+          assert.equal(actual, expected);
+          done();
+        }));
 
     });
   });
 
-  xdescribe('Without i18n', function() {
-    it('should generate the template without i18n task options', function() {
+  xdescribe('Translate file', function () {
+    it('should translate the template into english', function () {
 
+    });
+    it('should translate the template into spanish', function () {
+
+    });
+  });
+
+  describe('Without i18n', function () {
+    it('should generate the template without i18n task options', function (done) {
+      var options = {
+        i18n: {
+          dest: '.tmp'
+        },
+        data: {
+          $i18n: {
+            message: 'Hello world!',
+            nested: {
+              msg: 'and hello to you'
+            }
+          }
+        },
+        pretty: true
+      };
+      gulp.src(fixtures('directory/*.pug'))
+        .pipe(pugI18n(options))
+        .pipe(gulp.dest(options.i18n.dest))
+        .pipe(sassert.end(function () {
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/no-i18n.html')).toString();
+          var actual = fs.readFileSync(path.join('./.tmp/no-i18n.html')).toString();
+          assert.equal(actual, expected);
+          done();
+        }));
     });
   });
 });
