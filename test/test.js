@@ -16,7 +16,7 @@ describe('gulp-pug-i18n', function () {
     fs.remove('./.tmp', done);
   });
 
-  describe('Translate directory', function () {
+  describe('Translate directory:', function () {
 
     it('should translate the template into english', function (done) {
       var options = {
@@ -60,16 +60,48 @@ describe('gulp-pug-i18n', function () {
     });
   });
 
-  xdescribe('Translate file', function () {
-    it('should translate the template into english', function () {
+  describe('Translate file:', function () {
+    it('should translate the template into english', function (done) {
+      var options = {
+        i18n: {
+          dest: '.tmp',
+          locales: 'test/locales/*.*'
+        },
+        pretty: true
+      };
+      gulp.src(fixtures('directory/*.pug'))
+        .pipe(pugI18n(options))
+        .pipe(gulp.dest(options.i18n.dest))
+        .pipe(sassert.end(function () {
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/template.en.us.html')).toString();
+          var actual = fs.readFileSync(path.join('./.tmp/template.en.us.html')).toString();
+          assert.equal(actual, expected);
+          done();
+        }));
 
     });
-    it('should translate the template into spanish', function () {
+    it('should translate the template into spanish', function (done) {
+      var options = {
+        i18n: {
+          dest: '.tmp',
+          locales: 'test/locales/*.*'
+        },
+        pretty: true
+      };
+      gulp.src(fixtures('directory/*.pug'))
+        .pipe(pugI18n(options))
+        .pipe(gulp.dest(options.i18n.dest))
+        .pipe(sassert.end(function () {
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/template.es_es.html')).toString();
+          var actual = fs.readFileSync(path.join('./.tmp/template.es_es.html')).toString();
+          assert.equal(actual, expected);
+          done();
+        }));
 
     });
   });
 
-  describe('Without i18n', function () {
+  describe('Without i18n:', function () {
     it('should generate the template without i18n task options', function (done) {
       var options = {
         i18n: {
