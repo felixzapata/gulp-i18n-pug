@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/felixzapata/gulp-pug-i18n",
   "devDependencies": {
+    "assert": "^1.4.1",
     "conventional-changelog": "^1.1.0",
     "eslint-plugin-html": "^1.5.2",
     "fs-extra": "^0.30.0",
