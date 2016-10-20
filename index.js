@@ -52,35 +52,32 @@ function readJSON(filepath, options) {
     }
 }
 
-function addLocaleExtensionDest(obj, locale, outputExt) {
+function addLocaleExtensionDest(file, locale, outputExt) {
 
-    var files = glob.sync(path.join(obj.cwd, obj.src));
-    return files.map(function (file) {
+    var dest, ext;
 
-        var dest, ext;
+    locale = locale.toLowerCase();
+    ext = getExtension(file);
 
-        locale = locale.toLowerCase();
-        ext = getExtension(file);
+    function getBaseName() {
+        return path.basename(file).split('.')[0];
+    }
 
+    if (ext) {
+        dest = path.join(path.basename(file, ext) + '.' + locale);
+    } else {
+        dest = path.join(getBaseName() + '.' + locale);
+    }
 
-        function getBaseName() {
-            return path.basename(file).split('.')[0];
-        }
+    /*if (obj.ext) {
+        dest += setExtension(obj.ext);
+    } else {
+        dest += setExtension(outputExt);
+    }*/
 
-        if (ext) {
-            dest = path.join(obj.dest, path.basename(file, ext) + '.' + locale);
-        } else {
-            dest = path.join(obj.dest, getBaseName() + '.' + locale);
-        }
+    dest += setExtension(outputExt);
 
-        if (obj.ext) {
-            dest += setExtension(obj.ext);
-        } else {
-            dest += setExtension(outputExt);
-        }
-
-        return dest;
-    });
+    return dest;
 }
 
 function addLocaleDirnameDest(file, locale, outputExt) {
@@ -127,6 +124,16 @@ function plugI18nPlugin(options) {
     var fileExt;
     var locale;
 
+    /*var defaultI18nOptions = {
+        i18n: {
+            namespace: '$i18n',
+            localeExtension: false,
+            defaultExt: '.html'
+        }
+    }*/
+
+    // var options = customOptions.i18n ? Object.assign(defaultI18nOptions.i18n, customOptions.i18n) : {};
+
     if (!options.i18n) {
         options.i18n = {};
     } else {
@@ -148,7 +155,7 @@ function plugI18nPlugin(options) {
         defaultExt = '.html';
     }
 
-    var locales = glob.sync(options.i18n.locales);
+    var locales = options.i18n.locales ? glob.sync(options.i18n.locales) : null;
 
 
     var bufferContents = function (file, enc, cb) {
@@ -164,7 +171,6 @@ function plugI18nPlugin(options) {
         }
 
         if (locales && locales.length) {
-
             for (var i = 0, len = locales.length; i < len; i++) {
                 localePath = locales[i];
                 fileExt = localePath.split('.').slice(-1)[0];
@@ -194,6 +200,12 @@ function plugI18nPlugin(options) {
 
         } else {
             gutil.log('Locales files not found. Nothing to translate');
+            compiledFiles.push(new gutil.File({
+                base: __dirname,
+                cwd: __dirname,
+                contents: new Buffer(pug.compileFile(file.path, options)(options.data)),
+                path: path.basename(file.path).split('.')[0] + defaultExt
+            }));
         }
         cb();
     }
