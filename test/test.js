@@ -60,7 +60,7 @@ describe('gulp-pug-i18n', function () {
     });
   });
 
-  xdescribe('Translate file:', function () {
+  describe('Translate file:', function () {
     it('should translate the template into english', function (done) {
       var options = {
         i18n: {
