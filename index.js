@@ -112,51 +112,32 @@ function readFile(filepath) {
     return data;
 }
 
-function plugI18nPlugin(options) {
+function plugI18nPlugin(customOptions) {
 
     var baseName;
     var compiledFiles = [];
     var defaultExt;
     var dest;
-    var localeExtension;
     var localePath;
-    var namespace;
     var fileExt;
     var locale;
 
-    /*var defaultI18nOptions = {
+    var defaultI18nOptions = {
         i18n: {
             namespace: '$i18n',
             localeExtension: false,
             defaultExt: '.html'
         }
-    }*/
+    }
+    var options = Object.assign({}, customOptions);
 
-    // var options = customOptions.i18n ? Object.assign(defaultI18nOptions.i18n, customOptions.i18n) : {};
-
-    if (!options.i18n) {
+    if(!options.i18n) {
         options.i18n = {};
     } else {
-        locales = options.i18n.locales;
-        namespace = options.i18n.namespace;
-        localeExtension = options.i18n.localeExtension;
-        defaultExt = options.i18n.defaultExt;
-    }
-
-    if (!namespace) {
-        namespace = '$i18n';
-    }
-
-    if (!localeExtension) {
-        localeExtension = false;
-    }
-
-    if (!defaultExt) {
-        defaultExt = '.html';
+        options.i18n = Object.assign(defaultI18nOptions.i18n, customOptions.i18n);
     }
 
     var locales = options.i18n.locales ? glob.sync(options.i18n.locales) : null;
-
 
     var bufferContents = function (file, enc, cb) {
 
@@ -181,12 +162,12 @@ function plugI18nPlugin(options) {
                 if (!options.data) {
                     options.data = {};
                 }
-                options.data[namespace] = readFile(localePath);
+                options.data[options.i18n.namespace] = readFile(localePath);
 
-                if (localeExtension) {
-                    dest = addLocaleExtensionDest(baseName, locale, defaultExt);
+                if (options.i18n.localeExtension) {
+                    dest = addLocaleExtensionDest(baseName, locale, options.i18n.defaultExt);
                 } else {
-                    dest = addLocaleDirnameDest(baseName, locale, defaultExt);
+                    dest = addLocaleDirnameDest(baseName, locale, options.i18n.defaultExt);
                 }
 
                 compiledFiles.push(new gutil.File({
