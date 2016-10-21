@@ -2,13 +2,13 @@
 
 [![Build Status](https://travis-ci.org/felixzapata/gulp-pug-i18n.png)](https://travis-ci.org/felixzapata/gulp-pug-i18n)
 
+[![Package Quality](http://npm.packagequality.com/badge/gulp-pug-i18n.png)](http://npm.packagequality.com/badge/gulp-pug-i18n.png)
+
 > Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files
 
 Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 
-## Work in progress.
-
-### Usage example
+### Usage
 
 #### Example JSON locale file (es_ES.json)
 ```json
@@ -24,6 +24,60 @@ Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 body
   h1 #{$i18n.hello.world}!
   p Using locale #{$localeName}
+```
+
+```javascript
+gulp.task('pugI18n', function () {
+  var options = {
+    i18n: {
+      dest: 'dist',
+      locales: 'test/locales/*.*'
+    },
+    pretty: true
+  };
+  return gulp.src('myPugTemplates/directory/*.pug')
+    .pipe(pugI18n(options))
+    .pipe(gulp.dest(options.i18n.dest));
+});
+```
+
+```javascript
+gulp.task('pugI18n', function () {
+  var options = {
+    i18n: {
+      locales: 'test/locales/*',
+      namespace: '$t',
+      localeExtension: true
+    },
+    client: false,
+    pretty: true
+  };
+  return gulp.src('myPugTemplates/directory/*.pug')
+    .pipe(pugI18n(options))
+    .pipe(gulp.dest(options.i18n.dest));
+});
+```
+
+```javascript
+gulp.task('pugI18n', function () {
+  var options = {
+    i18n: {
+      dest: '.tmp'
+    },
+    data: {
+      $i18n: {
+        message: 'Hello world!',
+        nested: {
+          msg: 'and hello to you'
+        }
+      }
+    },
+    pretty: true
+  };
+  return gulp.src('myPugTemplates/directory/*.pug')
+    .pipe(pugI18n(options))
+    .pipe(gulp.dest(options.i18n.dest));
+});
 ```
 
 ### Options
@@ -65,3 +119,7 @@ html/
 └── es-ES/
     └── view.html
 ```
+
+## License
+
+MIT © [Felix Zapata](http://github.com/felixzapata)
