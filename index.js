@@ -116,7 +116,6 @@ function plugI18nPlugin(customOptions) {
 
     var baseName;
     var compiledFiles = [];
-    var defaultExt;
     var dest;
     var localePath;
     var fileExt;
@@ -131,7 +130,7 @@ function plugI18nPlugin(customOptions) {
     }
     var options = Object.assign({}, customOptions);
 
-    if(!options.i18n) {
+    if (!options.i18n) {
         options.i18n = {};
     } else {
         options.i18n = Object.assign(defaultI18nOptions.i18n, customOptions.i18n);
@@ -185,7 +184,7 @@ function plugI18nPlugin(customOptions) {
                 base: __dirname,
                 cwd: __dirname,
                 contents: new Buffer(pug.compileFile(file.path, options)(options.data)),
-                path: path.basename(file.path).split('.')[0] + defaultExt
+                path: path.basename(file.path).split('.')[0] + options.i18n.defaultExt
             }));
         }
         cb();
