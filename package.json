@@ -1,6 +1,6 @@
 {
   "name": "gulp-pug-i18n",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files",
   "main": "index.js",
   "repository": {
@@ -16,7 +16,7 @@
   ],
   "author": {
     "name": "Félix Zapata",
-    "url": "http://www.linkedin.com/in/felixzapata"
+    "url": "github.com/felixzapata"
   },
   "scripts": {
     "test": "gulp test"
