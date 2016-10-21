@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/felixzapata/gulp-pug-i18n.png)](https://travis-ci.org/felixzapata/gulp-pug-i18n)
 
-[![Package Quality](http://npm.packagequality.com/badge/gulp-pug-i18n.png)](http://npm.packagequality.com/badge/gulp-pug-i18n.png)
-
 > Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files
 
 Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
