@@ -103,7 +103,7 @@ describe('gulp-pug-i18n', function () {
     });
   });
 
-  xdescribe('Without i18n:', function () {
+  describe('Without i18n:', function () {
     it('should generate the template without i18n task options', function (done) {
       var options = {
         i18n: {
@@ -121,7 +121,7 @@ describe('gulp-pug-i18n', function () {
       };
       gulp.src(fixtures('directory/*.pug'))
         .pipe(pugI18n(options))
-        .pipe(gulp.dest('.tmp'))
+        .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
           var expected = fs.readFileSync(path.join(__dirname, 'expected/template.html')).toString();
           var actual = fs.readFileSync(path.join(__dirname, '../', '.tmp/template.html')).toString();
