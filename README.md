@@ -8,6 +8,8 @@
 
 Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 
+It adds high level support for Pug template internationalization based on JSON/YAML/JS files
+
 ### Usage
 
 #### Example JSON locale file (es_ES.json)
