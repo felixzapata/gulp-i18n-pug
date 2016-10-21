@@ -8,7 +8,7 @@
 
 Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 
-It adds high level support for Pug template internationalization based on JSON/YAML/JS files
+It adds high level support for Pug template internationalization based on JSON/YAML/JS files.
 
 ### Usage
 
