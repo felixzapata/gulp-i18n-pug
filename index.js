@@ -69,12 +69,6 @@ function addLocaleExtensionDest(file, locale, outputExt) {
         dest = path.join(getBaseName() + '.' + locale);
     }
 
-    /*if (obj.ext) {
-        dest += setExtension(obj.ext);
-    } else {
-        dest += setExtension(outputExt);
-    }*/
-
     dest += setExtension(outputExt);
 
     return dest;
