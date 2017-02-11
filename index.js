@@ -156,6 +156,7 @@ function plugI18nPlugin(customOptions) {
                     options.data = {};
                 }
                 options.data[options.i18n.namespace] = readFile(localePath);
+                options.data['$localeName'] = locale;
 
                 if (options.i18n.localeExtension) {
                     dest = addLocaleExtensionDest(baseName, locale, options.i18n.defaultExt);

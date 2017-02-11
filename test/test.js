@@ -26,7 +26,7 @@ describe('gulp-pug-i18n', function () {
         },
         pretty: true
       };
-      gulp.src(fixtures('directory/*.pug'))
+      gulp.src(fixtures('directory/template.pug'))
         .pipe(pugI18n(options))
         .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
@@ -47,7 +47,7 @@ describe('gulp-pug-i18n', function () {
         },
         pretty: true
       };
-      gulp.src(fixtures('directory/*.pug'))
+      gulp.src(fixtures('directory/template.pug'))
         .pipe(pugI18n(options))
         .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
@@ -70,7 +70,7 @@ describe('gulp-pug-i18n', function () {
         },
         pretty: true
       };
-      gulp.src(fixtures('directory/*.pug'))
+      gulp.src(fixtures('directory/template.pug'))
         .pipe(pugI18n(options))
         .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
@@ -90,7 +90,7 @@ describe('gulp-pug-i18n', function () {
         },
         pretty: true
       };
-      gulp.src(fixtures('directory/*.pug'))
+      gulp.src(fixtures('directory/template.pug'))
         .pipe(pugI18n(options))
         .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
@@ -110,21 +110,19 @@ describe('gulp-pug-i18n', function () {
           dest: '.tmp'
         },
         data: {
-          $i18n: {
-            message: 'Hello world!',
-            nested: {
-              msg: 'and hello to you'
-            }
+          message: 'Hello world!',
+          nested: {
+            msg: 'and hello to you'
           }
         },
         pretty: true
       };
-      gulp.src(fixtures('directory/*.pug'))
+      gulp.src(fixtures('directory/template-noi18n.pug'))
         .pipe(pugI18n(options))
         .pipe(gulp.dest(options.i18n.dest))
         .pipe(sassert.end(function () {
-          var expected = fs.readFileSync(path.join(__dirname, 'expected/template.html')).toString();
-          var actual = fs.readFileSync(path.join(__dirname, '../', '.tmp/template.html')).toString();
+          var expected = fs.readFileSync(path.join(__dirname, 'expected/template-noi18n.html')).toString();
+          var actual = fs.readFileSync(path.join(__dirname, '../', '.tmp/template-noi18n.html')).toString();
           assert.equal(actual, expected);
           done();
         }));
