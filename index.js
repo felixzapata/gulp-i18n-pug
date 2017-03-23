@@ -1,6 +1,6 @@
 /*
  * gult-stubby
- * https://github.com/felixzapata/gulp-pug-i18n
+ * https://github.com/felixzapata/gulp-i18n-pug
  *
  * Copyright (c) 2016 Félix Zapata
  * Licensed under the MIT license.
@@ -16,7 +16,7 @@ var gutil = require('gulp-util');
 var path = require('path');
 var YAML = require('js-yaml');
 var through = require('through2');
-var PLUGIN_NAME = 'gulp-pug-i18n';
+var PLUGIN_NAME = 'gulp-i18n-pug';
 
 
 function getExtension(filepath) {

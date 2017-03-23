@@ -1,6 +1,6 @@
 /*
  * gulp-stubby
- * https://github.com/felixzapata/gulp-pug-i18n
+ * https://github.com/felixzapata/gulp-i18n-pug
  *
  * Copyright (c) 2016 Felix Zapata
  * Licensed under the MIT license.

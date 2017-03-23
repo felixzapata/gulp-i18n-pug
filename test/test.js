@@ -10,7 +10,7 @@ require('mocha');
 
 var fixtures = function (glob) { return path.join(__dirname, './fixtures', glob); }
 
-describe('gulp-pug-i18n', function () {
+describe('gulp-i18n-pug', function () {
 
   afterEach(function (done) {
     fs.remove('./.tmp', done);
