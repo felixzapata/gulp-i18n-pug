@@ -166,7 +166,6 @@ function plugI18nPlugin(customOptions) {
 
                 compiledFiles.push(new gutil.File({
                     base: path.join(__dirname, locale),
-                    cwd: __dirname,
                     contents: new Buffer(pug.compileFile(file.path, options)(options.data)),
                     path: path.join(options.i18n.dest, dest)
                 }));
