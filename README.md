@@ -120,6 +120,10 @@ html/
     └── view.html
 ```
 
+## Release History
+
+Read the [full changelog](CHANGELOG.md).
+
 ## License
 
 MIT © [Felix Zapata](http://github.com/felixzapata)
