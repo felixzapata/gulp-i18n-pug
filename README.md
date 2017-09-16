@@ -14,7 +14,7 @@ It adds high level support for Pug template internationalization based on JSON/Y
 ## How to install
 
 ```bash
-$ npm install gulp-pug-i18n --save-dev
+$ npm install gulp-i18n-pug --save-dev
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ body
 ```
 
 ```javascript
-var pugI18n = require('gulp-pug-i18n');
+var pugI18n = require('gulp-i18n-pug');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
@@ -52,7 +52,7 @@ gulp.task('pugI18n', function () {
 ```
 
 ```javascript
-var pugI18n = require('gulp-pug-i18n');
+var pugI18n = require('gulp-i18n-pug');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
@@ -70,7 +70,7 @@ gulp.task('pugI18n', function () {
 ```
 
 ```javascript
-var pugI18n = require('gulp-pug-i18n');
+var pugI18n = require('gulp-i18n-pug');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
