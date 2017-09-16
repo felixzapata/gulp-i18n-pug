@@ -10,7 +10,14 @@ Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 
 It adds high level support for Pug template internationalization based on JSON/YAML/JS files.
 
-### Usage
+
+## How to install
+
+```bash
+$ npm install gulp-pug-i18n --save-dev
+```
+
+## Usage
 
 #### Example JSON locale file (es_ES.json)
 ```json
@@ -21,7 +28,7 @@ It adds high level support for Pug template internationalization based on JSON/Y
 }
 ```
 
-##### Example Pug template
+#### Example Pug template
 ```pug
 body
   h1 #{$i18n.hello.world}!
@@ -29,6 +36,7 @@ body
 ```
 
 ```javascript
+var pugI18n = require('gulp-pug-i18n');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
@@ -44,6 +52,7 @@ gulp.task('pugI18n', function () {
 ```
 
 ```javascript
+var pugI18n = require('gulp-pug-i18n');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
@@ -61,6 +70,7 @@ gulp.task('pugI18n', function () {
 ```
 
 ```javascript
+var pugI18n = require('gulp-pug-i18n');
 gulp.task('pugI18n', function () {
   var options = {
     i18n: {
