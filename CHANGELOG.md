@@ -1,3 +1,13 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.1...v1.0.2) (2017-09-16)
+
+
+### Bug Fixes
+
+* **index.js:** use dest option to set the base path ([b54200f](https://github.com/felixzapata/gulp-i18n-pug/commit/b54200f))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.0...v1.0.1) (2017-06-29)
 
