@@ -1,3 +1,8 @@
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.2...v1.0.3) (2018-03-26)
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.1...v1.0.2) (2017-09-16)
 
