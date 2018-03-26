@@ -54,19 +54,18 @@ function readJSON(filepath, options) {
 
 function addLocaleExtensionDest(file, locale, outputExt) {
 
-    var dest, ext;
-
-    locale = locale.toLowerCase();
-    ext = getExtension(file);
+    var dest
+    var ext = getExtension(file);
+    var localeLowerCase = locale.toLowerCase();
 
     function getBaseName() {
         return path.basename(file).split('.')[0];
     }
 
     if (ext) {
-        dest = path.join(path.basename(file, ext) + '.' + locale);
+        dest = path.join(path.basename(file, ext) + '.' + localeLowerCase);
     } else {
-        dest = path.join(getBaseName() + '.' + locale);
+        dest = path.join(getBaseName() + '.' + localeLowerCase);
     }
 
     dest += setExtension(outputExt);
@@ -75,7 +74,9 @@ function addLocaleExtensionDest(file, locale, outputExt) {
 }
 
 function addLocaleDirnameDest(file, locale, outputExt) {
-    var base, dest, ext = getExtension(file);
+    var base;
+    var dest;
+    var ext = getExtension(file);
     if (ext) {
         dest = path.join(locale, path.dirname(file), path.basename(file, ext) + setExtension(ext));
     } else {
