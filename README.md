@@ -4,7 +4,7 @@
 
 [![Package Quality](http://npm.packagequality.com/badge/gulp-i18n-pug.png)](http://packagequality.com/#?package=gulp-i18n-pug)
 
-> Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files
+> Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files.
 
 Inspired by [grunt-pug-i18n](https://github.com/AdesisNetlife/grunt-pug-i18n).
 
@@ -94,15 +94,15 @@ gulp.task('pugI18n', function () {
 
 ### Options
 
-Only `i18n` specific options are listed below
+Only `i18n` specific options are listed below.
 
 
 #### locales
 Type: `string|array`
 
-Path to localization files. Please check the examples in tests. Glob patterns can be used
+Path to localization files. Please check the examples in tests. Glob patterns can be used.
 
-`JSON`, `YAML` and `JS` formats are supported for the translation templates
+`JSON`, `YAML` and `JS` formats are supported for the translation templates.
 
 #### namespace
 Type: `string`
@@ -115,7 +115,7 @@ Type: `boolean`
 Default: `false`
 
 Generate the HTML output files with the extension prefix with the current language.
-By default it will create different folders for each language
+By default it will create different folders for each language.
 
 Setting this option into `true`, the generated HTML files will look like this:
 ```
@@ -132,10 +132,17 @@ html/
     └── view.html
 ```
 
+#### verbose
+Type: `Boolean`
+
+Default value: `false`
+
+Show the status.
+
 ## Release History
 
 Read the [full changelog](CHANGELOG.md).
 
 ## License
 
-MIT © [Felix Zapata](http://github.com/felixzapata)
+MIT © [Felix Zapata](http://github.com/felixzapata).

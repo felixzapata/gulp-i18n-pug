@@ -16,6 +16,7 @@ var gutil = require('gulp-util');
 var path = require('path');
 var YAML = require('js-yaml');
 var through = require('through2');
+var chalk = require('chalk');
 var PLUGIN_NAME = 'gulp-i18n-pug';
 
 
@@ -120,7 +121,8 @@ function plugI18nPlugin(customOptions) {
         i18n: {
             namespace: '$i18n',
             localeExtension: false,
-            defaultExt: '.html'
+            defaultExt: '.html',
+            verbose: false
         }
     }
     var options = Object.assign({}, customOptions);
@@ -151,8 +153,10 @@ function plugI18nPlugin(customOptions) {
                 fileExt = localePath.split('.').slice(-1)[0];
                 locale = path.basename(localePath, '.' + fileExt);
                 baseName = path.basename(file.path);
-                gutil.log('Loading locale ' + locale);
-                gutil.log('Reading translation data: ' + localePath);
+                if (options.i18n.verbose) {
+                    console.log(chalk.cyan('Loading locale ') + locale);
+                    console.log(chalk.cyan('Reading translation data: ') + localePath);
+                }
                 if (!options.data) {
                     options.data = {};
                 }
@@ -174,7 +178,7 @@ function plugI18nPlugin(customOptions) {
             }
 
         } else {
-            gutil.log('Locales files not found. Nothing to translate');
+            console.log(chalk.red('Locales files not found. Nothing to translate'));
             compiledFiles.push(new gutil.File({
                 base: __dirname,
                 cwd: __dirname,
@@ -191,6 +195,7 @@ function plugI18nPlugin(customOptions) {
             return;
         }
         for (var i = 0, len = compiledFiles.length; i < len; i++) {
+            console.log(chalk.cyan('Created file: ') + compiledFiles[i].path);
             this.push(compiledFiles[i]);
         }
         cb();
