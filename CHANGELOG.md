@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.3...v1.1.0) (2018-05-15)
+
+
+### Features
+
+* **verbose:** add verbose option ([7afe64a](https://github.com/felixzapata/gulp-i18n-pug/commit/7afe64a))
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/felixzapata/gulp-i18n-pug/compare/1.0.2...v1.0.3) (2018-03-26)
 
