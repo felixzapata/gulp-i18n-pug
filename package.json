@@ -1,6 +1,6 @@
 {
   "name": "gulp-i18n-pug",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Gulp plugin to compile Pug templates with internationalization support based on JS/JSON/YAML files",
   "main": "index.js",
   "repository": {
